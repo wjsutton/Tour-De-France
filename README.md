@@ -37,9 +37,9 @@ A data visualisation of cycling's toughest sporting competition.
 
 ### :a: About
 
-The Tour de France is an annual men's multiple-stage bicycle race primarily held in France, while also occasionally passing through nearby countries. It consists of 21 stages, each a day long, over the course of 23 days around July.
+The Tour de France is an annual men's multiple-stage bicycle race primarily held in France, while also occasionally passing through nearby countries. It consists of 21 stages, each a day-long, over 23 days around July.
 
-The competition is an incredibly tough and gruelling, and from watching the 2021 tour it got me thinking, which tour is the toughest? Using data available I derived **five factors of toughness** to the score the tours and **create this eye-catching and illustrative visualisation**.
+The competition is incredibly tough and gruelling. Watching the 2021 tour got me thinking, which tour is the toughest? Using data available I derived **five factors of toughness** to the score the tours and **create this eye-catching and illustrative visualisation**.
 
 
 <div style="overflow: hidden;margin: 0 10px 0 0">
@@ -68,7 +68,7 @@ The data is read and reshaped using an [R script](https://github.com/wjsutton/To
 
 ### :a: Visual Alphabet
 
-The aim of the visualisation is show five factors associated with each year's Tour de France, the factors are designed to line up with the race's jersey competition [tour-de-france-jerseys](https://www.bicycling.com/tour-de-france/a22091015/tour-de-france-jerseys/). 
+The visualisation aims to show five factors associated with each year's Tour de France, the factors are designed to line up with the race's jersey competition [tour-de-france-jerseys](https://www.bicycling.com/tour-de-france/a22091015/tour-de-france-jerseys/). 
 - :yellow_square: Yellow Jersey -> Race Leader -> Level of competition (when was the lead decided)
 - :orange_square: Polka Dot Jersey -> King of the Mountains -> Highest point on the tour
 - :green_square: Green Jersey -> Leader in Sprinters Competition -> Average pace of the race winner
