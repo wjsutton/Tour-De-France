@@ -29,8 +29,8 @@ A data visualisation of cycling's toughest sporting competition.
     <td><b>:newspaper: CITATIONS</b></td>
  </tr>
  <tr>
-    <td><a href="https://public.tableau.com/en-us/gallery/toughest-tour-de-france?tab=viz-of-the-day&type=viz-of-the-day">Viz of the Day 2021-07-16</a></td>
-    <td><a href="https://www.linkedin.com/posts/tableau-software_tourdefrance-activity-6822903086168752128-bgbL">Tableau's LinkedIn</a></td>
+    <td><a href="https://public.tableau.com/en-us/gallery/toughest-tour-de-france?tab=viz-of-the-day&type=viz-of-the-day">Viz of the Day 2021-07-16</a><br><a href="https://public.tableau.com/app/profile/wjsutton/viz/TheToughestTour/TourdeFrance">100+ :star: on Tableau Public</a></td>
+    <td><a href="https://www.linkedin.com/posts/tableau-software_tourdefrance-activity-6822903086168752128-bgbL">Tableau's LinkedIn</a><br><br></td>
  </tr>
 </table>
 
@@ -66,7 +66,9 @@ The competition is incredibly tough and gruelling. Watching the 2021 tour got me
 
 The data is read and reshaped using an [R script](https://github.com/wjsutton/Tour-De-France/blob/master/tdf.R)
 
-### :a: Visual Alphabet
+### :a: Visual Alphabet and Accessibility
+
+<img src='https://raw.githubusercontent.com/wjsutton/Tour-De-France/master/screenshots/visual_alphabet.png' width="30%" align="right">
 
 The visualisation aims to show five factors associated with each year's Tour de France, the factors are designed to line up with the race's jersey competition [tour-de-france-jerseys](https://www.bicycling.com/tour-de-france/a22091015/tour-de-france-jerseys/). 
 - :yellow_square: Yellow Jersey -> Race Leader -> Level of competition (when was the lead decided)
@@ -74,6 +76,15 @@ The visualisation aims to show five factors associated with each year's Tour de 
 - :green_square: Green Jersey -> Leader in Sprinters Competition -> Average pace of the race winner
 - :red_square: Combativity Award -> Number of riders that abandoned the race
 - :blue_square: No Jersey -> Overall distance
+
+<br><br><br><br>
+Details of the Tour de France are unlikely to be well known to all the readers so several text elements were used to explain the sport and invite the readers to explore the data, in an effort to make the visual accessible for all. 
+
+<img src='https://raw.githubusercontent.com/wjsutton/Tour-De-France/master/screenshots/accessibility.png' width="100%">
+
+Colour hues were also checked and tested using [color-blindness.com/coblis-color-blindness-simulator/](https://www.color-blindness.com/coblis-color-blindness-simulator/), results as follows. In this case readers can also distinguish between the factors by colour and the segment angle, so the viz can be still be understand by a monochrome view but it is much easier if the colours are distinct too, in most cases this is true.
+
+<img src="https://raw.githubusercontent.com/wjsutton/Tour-De-France/master/screenshots/colour_blindness_check.png" width="100%">
 
 ### :chart_with_upwards_trend: Charting in Tableau
 
