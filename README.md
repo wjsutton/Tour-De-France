@@ -5,8 +5,10 @@ The Toughest Tour de France :bicyclist: :biking_woman: :biking_man:
 A data visualisation of cycling's toughest sporting competition.
 <br>
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]() [![GitHub Issues](https://img.shields.io/github/issues/wjsutton/Tour-De-France.svg)](https://github.com/wjsutton/Tour-De-France/issues) [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wjsutton/Tour-De-France.svg)](https://github.com/wjsutton/Tour-De-France/pulls) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-[Twitter][Twitter] :speech_balloon:&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[LinkedIn][LinkedIn] :necktie:&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[GitHub :octocat:][GitHub]&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[Website][Website] :link:
+[![Status](https://img.shields.io/badge/status-active-success.svg)]() [![GitHub Issues](https://img.shields.io/github/issues/wjsutton/Tour-De-France.svg)](https://github.com/wjsutton/Tour-De-France/issues) [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wjsutton/Tour-De-France.svg)](https://github.com/wjsutton/Tour-De-France/pulls) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)<br>
+
+
+<br>
 
 <!--/div-->
 
@@ -59,8 +61,6 @@ The competition is incredibly tough and gruelling. Watching the 2021 tour got me
 <img src='https://github.com/wjsutton/Tour-De-France/blob/master/Tour%20de%20France.png?raw=true' width="100%">
 </a>
 </div>
-
-# :construction: UNDER CONSTRUCTION :construction:
 
 <h1 style="font-weight:normal"> 
 :hammer: Building the Visualisation
@@ -123,15 +123,18 @@ Tooltip is a list of all tooltips from the dataset: [data/the_toughest_tour.csv]
 
 Many elements of this visualisation were created in Figma, including all the static text using the font: Open Sans
 
-Images created in Figma can be found in [figma/](https://github.com/wjsutton/Tour-De-France/tree/master/figma), of note:
+Images created in Figma can be found in [/figma](https://github.com/wjsutton/Tour-De-France/tree/master/figma), of note:
 - [underlay](https://github.com/wjsutton/Tour-De-France/tree/master/figma/underlay.png) forms the lowest level of the dashboard with everything else floating on top of it 
 - [coxcomb_background_image](https://github.com/wjsutton/Tour-De-France/tree/master/figma/coxcomb_background_image.png) is imported into Tableau as a background image for the Coxcomb sheet (X field: 5a.X, Left: -7.4, Right: 7.4 | Y field: 5a.Y, Bottom: -7.4, Top: 7.4)
 - as [coxcomb_background_image](https://github.com/wjsutton/Tour-De-France/tree/master/figma/coxcomb_background_image.png) repeats even when there is no data available: [1903](https://github.com/wjsutton/Tour-De-France/tree/master/figma/1903.png), [2020s](https://github.com/wjsutton/Tour-De-France/tree/master/figma/2020.png), [WW1](https://github.com/wjsutton/Tour-De-France/tree/master/figma/WW1.png), [WW2](https://github.com/wjsutton/Tour-De-France/tree/master/figma/WW2.png) are floated at the top of the dashboard to hide empty wheels and provide some commentary on the data. 
 
---
+---
 
 <div style="overflow: hidden;margin: 0 10px 0 0">
 <a href="https://public.tableau.com/app/profile/wjsutton/viz/TheToughestTour/TourdeFrance">
 <img src='https://github.com/wjsutton/Tour-De-France/blob/master/Tour%20de%20France.png?raw=true' width="100%">
 </a>
 </div>
+
+Will Sutton, Sept 2021<br>
+[Twitter][Twitter] :speech_balloon:&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[LinkedIn][LinkedIn] :necktie:&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[GitHub :octocat:][GitHub]&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[Website][Website] :link:
