@@ -17,13 +17,30 @@ winners <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesd
 # 2021 history figure is 3383 - believe it is missing stage 20's 30.8km time trial
 df <- readxl::read_excel('data/tour_de_france.xlsx', sheet = 'Sheet1')
 
+# 2022 onwards from https://www.letour.fr/en/history and Wikipedia 'YYYY Tour de France'
+# distance is as raced (letour.fr history shows the planned distance)
+# speed is the official GC average (procyclingstats); 2025 & 2026 GC was neutralised on stage 21,
+# so distance / time overstates it. 2026 is 43.326 (PCS) vs 43.227 (BBC/Tissot)
+# stages_led = stages after which the winner held yellow
+new_tours <- data.frame(
+  Year = 2022:2026,
+  speed = c(42.102, 41.413, 41.808, 42.849, 43.326),
+  distance = c(3349.8, 3404, 3498, 3301.9, 3245),
+  Finishers = c(135, 150, 141, 160, 158),
+  Entrants = c(176, 176, 176, 184, 184),
+  winner_name = c('Jonas Vingegaard','Jonas Vingegaard','Tadej Pogačar','Tadej Pogačar','Tadej Pogačar'),
+  stages_led = c(11, 16, 19, 14, 17)
+)
+df <- bind_rows(df, transmute(new_tours, Year, `Winner's avg speed` = speed, `Total distance (km)` = distance,
+                              `Number of stages` = 21, Finishers, Entrants, Winner = winner_name))
+
 # https://en.wikipedia.org/wiki/List_of_highest_points_reached_in_the_Tour_de_France
-peak <- read.csv('data/highest_point_on_tour.csv',stringsAsFactors = F)
+peak <- read.csv('data/highest_point_on_tour.csv',stringsAsFactors = F,fileEncoding = 'UTF-8-BOM')
 peak <- filter(peak,Elevation != '')
 
 # Clean up elevation data
 # extract numerical value
-peak$Year <- as.double(peak$ï..Year)
+peak$Year <- as.double(peak$Year)
 peak$highest_elevation_in_m <- str_extract(peak$Elevation,'(\\d|\\,)+')
 peak$highest_elevation_in_m <- gsub(',','',peak$highest_elevation_in_m)
 peak$highest_elevation_in_m <- as.double(peak$highest_elevation_in_m)
@@ -52,8 +69,8 @@ led_the_tour <- winners[,c('Year','stages_led')]
 
 # input data from https://www.letour.fr/en/history and append
 led_2020 <- c(2020,2)
-led_2021 <- c(2021,13)
-led_the_tour <- rbind(led_the_tour,led_2020,led_2021)
+led_2021 <- c(2021,14)
+led_the_tour <- rbind(led_the_tour,led_2020,led_2021,new_tours[,c('Year','stages_led')])
 
 # calculate the percentage of the tour that was led, note not all tours had 23 stages
 led_the_tour <- inner_join(led_the_tour,df[,c('Year','Number of stages')],by = c('Year' = 'Year'))
@@ -91,7 +108,8 @@ winners_df <- winners[,c('Year','winner_name','stages_led')]
 names(winners_df) <- c('year','winner_name','stages_led')
 
 # append data from https://www.letour.fr/en/history and clean up existing data
-winners_df <- rbind(winners_df,c(2020,'Tadej Pogačar',2),c(2021,'Tadej Pogačar',13))
+winners_df <- rbind(winners_df,c(2020,'Tadej Pogačar',2),c(2021,'Tadej Pogačar',14),
+                    setNames(new_tours[,c('Year','winner_name','stages_led')],names(winners_df)))
 winners_df$winner_name <- ifelse(winners_df$winner_name == 'Lance Armstrong','Lance Armstrong (Results voided)',winners_df$winner_name)
 winners_df <- transform(winners_df, year = as.numeric(year))
 

@@ -78,7 +78,7 @@ The competition is incredibly tough and gruelling. Watching the 2021 tour got me
 
 The data is read and reshaped using an [R script](https://github.com/wjsutton/Tour-De-France/blob/master/tdf.R), this script:
 - reads data from all the data sources
-- updates any missing figures up to 2021 with data from [letour.fr](https://www.letour.fr/en/history)
+- updates any missing figures up to 2026 with data from [letour.fr](https://www.letour.fr/en/history) and Wikipedia (2022+ distance is as raced, speed is the official GC average)
 - cleans data sets (characters accents mainly)
 - creates scaling factors for the 5 metrics to visualise in coxcomb chart from [CJ Mayes/player-metrics](https://cj-mayes.com/2021/07/07/player-metrics/)
 - create tooltip string for Tableau
