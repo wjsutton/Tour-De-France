@@ -55,6 +55,10 @@ peak$Mountain.range <- gsub('Ã©','é',peak$Mountain.range)
 # reduce to year and elevation
 peak_df <- peak[,c('Year','highest_elevation_in_m')]
 
+# xlsx has planned distances for some years (e.g. 1980, 1996), prefer as-raced from tidytuesday/Wikipedia
+winners$Year <- as.double(substr(winners$start_date,1,4))
+df$`Total distance (km)` <- coalesce(winners$distance[match(df$Year,winners$Year)], df$`Total distance (km)`)
+
 # calculate abandons (number of riders who didn't finished the race)
 df$total_abandons <- (df$Entrants - df$Finishers)
 df$percent_abandons <- (df$Entrants - df$Finishers)/df$Entrants
@@ -135,7 +139,7 @@ height <- paste0('The highest point of ',tooltip_df$year,"'s tour was ",tooltip_
 led <- paste0(tooltip_df$winner_name,' led the race for ',tooltip_df$stages_led,' stages out of ',tooltip_df$`Number of stages`,'.')
 
 # add tooltip to dataset via case when
-tooltip_df$tooltip <- case_when(tooltip_df$Metric == "winners_avg_speed" ~ paste0(tooltip_df$winner_name,' won the ',tooltip_df$year,' tour averaging a speed of ',round(tooltip_df$raw_value,1),'kph.'),
+tooltip_df$tooltip <- case_when(tooltip_df$Metric == "winners_avg_speed" ~ paste0(tooltip_df$winner_name,' won the ',tooltip_df$year,' tour averaging a speed of ',sprintf('%.1f',tooltip_df$raw_value + 1e-9),'kph.'), # ponytail: +1e-9 so 29.05 rounds up to 29.1
                                 tooltip_df$Metric == "total_distance_in_km" ~ paste0(tooltip_df$year,"'s tour covered ",tooltip_df$raw_value,'km.'),
                                 tooltip_df$Metric == "percent_abandons" ~ paste0(round(tooltip_df$raw_value*100,0),'% of riders abandoned the ',tooltip_df$year," tour leaving ",tooltip_df$Finishers,' riders at the finish.'),
                                 tooltip_df$Metric == "highest_elevation_in_m" ~ paste0('The highest point of ',tooltip_df$year,"'s tour was ",tooltip_df$raw_value,'m at ',tooltip_df$Climb,', ',tooltip_df$Mountain.range,'.'),
