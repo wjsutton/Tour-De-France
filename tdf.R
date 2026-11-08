@@ -152,3 +152,50 @@ toughest_tour_df <- inner_join(toughest_tour_df,tooltip_df[,c('year','Metric','t
 # write data to csv in utf8 encoding
 write.csv(toughest_tour_df,'data/the_toughest_tour.csv',row.names = FALSE,fileEncoding = "UTF-8")
 
+
+# Coxcomb geometry for Tableau map layers: data/coxcomb.geojson
+# layer = 'segment' (one wedge per year & metric), 'ring' (tyre around each wheel), 'label' (decade headers)
+# ring is data driven, so years with no tour get no empty wheel
+# wheel units match the old background image (-7.4 to 7.4), wedge radius = Value/100*5.4 + 0.27
+# ponytail: hand-written GeoJSON, switch to sf if geometry gets more complex
+deg <- 0.01                                  # degrees per wheel unit, small so web mercator distortion is negligible
+col_w <- 15.69; row_h <- 14.83               # cell spacing in wheel units (matches the dashboard grid)
+metric_order <- c('winners_avg_speed','total_distance_in_km','percent_abandons','led_percent','highest_elevation_in_m')
+ring_bands <- list(c('tyre',6.198,5.846),c('rim',5.846,5.698),c('rim_edge',5.698,5.661))
+
+lonlat <- function(year, x, y) {
+  sprintf('[%.5f,%.5f]', deg*((year %/% 10 - 190)*col_w + x), deg*(-(year %% 10)*row_h + y))
+}
+coords <- function(year, x, y) paste0('[', paste(lonlat(year, x, y), collapse = ','), ']')
+arc <- function(r, from, to, n) { t <- seq(from, to, length.out = n); list(x = r*cos(t), y = -r*sin(t)) } # y flipped so wedges run clockwise
+feature <- function(props, geom) {
+  p <- paste(sprintf('"%s":%s', names(props), sapply(props, function(v) if (is.numeric(v)) format(v) else paste0('"', gsub('"','\\\\"',v), '"'))), collapse = ',')
+  sprintf('{"type":"Feature","properties":{%s},"geometry":%s}', p, geom)
+}
+
+features <- c()
+for (i in seq_len(nrow(toughest_tour_df))) {
+  d <- toughest_tour_df[i,]
+  k <- match(d$Metric, metric_order)
+  a <- arc(d$Value/100*5.4 + 0.27, (k-4.75)*2*pi/5, (k-3.75)*2*pi/5, 100) # abandons (pink) centred at 12 o clock
+  geom <- sprintf('{"type":"Polygon","coordinates":[%s]}', coords(d$year, c(0,a$x,0), c(0,a$y,0)))
+  features <- c(features, feature(list(layer='segment', year=d$year, Metric=d$Metric, Value=d$Value, raw_value=d$raw_value, tooltip=d$tooltip), geom))
+}
+for (y in unique(toughest_tour_df$year)) for (b in ring_bands) {
+  outer <- arc(as.numeric(b[2]), 0, 2*pi, 121); inner <- arc(as.numeric(b[3]), 2*pi, 0, 121)
+  geom <- sprintf('{"type":"Polygon","coordinates":[%s,%s]}', coords(y, outer$x, outer$y), coords(y, inner$x, inner$y))
+  features <- c(features, feature(list(layer='ring', year=y, ring_part=b[1]), geom))
+}
+for (decade in seq(1900, 2020, 10)) {
+  geom <- sprintf('{"type":"Point","coordinates":%s}', lonlat(decade, 0, row_h*0.7))
+  features <- c(features, feature(list(layer='label', label=paste0(decade,'s')), geom))
+}
+# corners pin the map extent to the 900x670 Coxcomb zone (13 columns fill the width, bottom row flush with the bottom)
+# ponytail: 4 invisible points, Tableau fits to them so the wheels land where the underlay arrows expect
+sheet_w <- 13*col_w; sheet_h <- sheet_w*670/900
+x0 <- -col_w/2; y0 <- -9.5*row_h
+for (cn in list(c('bottom_left',x0,y0),c('bottom_right',x0+sheet_w,y0),c('top_left',x0,y0+sheet_h),c('top_right',x0+sheet_w,y0+sheet_h))) {
+  geom <- sprintf('{"type":"Point","coordinates":%s}', lonlat(1900, as.numeric(cn[2]), as.numeric(cn[3])))
+  features <- c(features, feature(list(layer='corner', corner=cn[1]), geom))
+}
+writeLines(sprintf('{"type":"FeatureCollection","features":[\n%s\n]}', paste(features, collapse = ',\n')), 'data/coxcomb.geojson', useBytes = TRUE)

@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Tableau packaged workbooks
+*.twbx
+*.twbr

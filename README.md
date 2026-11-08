@@ -83,7 +83,7 @@ The data is read and reshaped using an [R script](https://github.com/wjsutton/To
 - creates scaling factors for the 5 metrics to visualise in coxcomb chart from [CJ Mayes/player-metrics](https://cj-mayes.com/2021/07/07/player-metrics/)
 - create tooltip string for Tableau
 
-The output of this process is the dataset: [data/the_toughest_tour.csv](https://github.com/wjsutton/Tour-De-France/blob/master/data/the_toughest_tour.csv)
+The output of this process is the dataset: [data/the_toughest_tour.csv](https://github.com/wjsutton/Tour-De-France/blob/master/data/the_toughest_tour.csv), plus [data/coxcomb.geojson](https://github.com/wjsutton/Tour-De-France/blob/master/data/coxcomb.geojson): the wheel geometry for Tableau map layers (`layer` = segment, ring or label)
 
 ### :a: Visual Alphabet and Accessibility
 
