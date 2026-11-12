@@ -198,7 +198,7 @@
   },
   "era": {
     "type": "video",
-    "src": "era.webm",
+    "src": "https://wjsutton.github.io/assets/video/Tour%20de%20France/era.mp4",
     "poster": "era.jpg",
     "alt": "Silent black-and-white newsreel: the peloton races through crowds in Dutch towns, along a harbour, past a lighthouse and round a seafront road",
     "caption": "The 1954 Tour starts in Amsterdam, the first start outside France. Silent 45-second extract.",

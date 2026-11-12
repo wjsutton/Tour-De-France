@@ -1,8 +1,8 @@
 {
   "id": "com.tableau.mcp.the-toughest-tour-story",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "manifestVersion": "0.1",
   "name": "The Toughest Tour Story",
   "author": "Tableau MCP",
-  "requestedOrigins": ""
+  "requestedOrigins": "https://wjsutton.github.io"
 }

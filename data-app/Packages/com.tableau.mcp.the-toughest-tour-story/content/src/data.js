@@ -77,10 +77,30 @@
         ? list.filter(function (d) { return d && d.id === BOUND_DATASOURCE_ID; })[0]
         : list[0];
       if (!ds) { throw new Error('data source ' + (BOUND_DATASOURCE_ID || '(first)') + ' not found in the workbook'); }
-      // No aggregation function: (year, Metric) is unique, so each row comes back as-is.
-      return ds.queryAsync({ fields: FIELDS.map(function (f) { return { fieldCaption: f }; }) });
-    }).then(function (result) {
-      return result && Array.isArray(result.data) ? result.data : [];
+      // Publishing can re-case captions (Desktop turned Metric/Value into metric/value), so match
+      // FIELDS to the datasource's real captions case-insensitively, then rename keys back.
+      var meta = typeof ds.readMetadataAsync === 'function'
+        ? ds.readMetadataAsync().catch(function () { return null; })
+        : Promise.resolve(null);
+      return meta.then(function (m) {
+        var list = (m && (m.data || m.fields)) || [];
+        var byLower = {};
+        list.forEach(function (f) {
+          var c = f && (f.fieldCaption || f.caption || f.name);
+          if (c) { byLower[String(c).toLowerCase()] = String(c); }
+        });
+        var captions = FIELDS.map(function (f) { return byLower[f.toLowerCase()] || f; });
+        // No aggregation function: (year, Metric) is unique, so each row comes back as-is.
+        return ds.queryAsync({ fields: captions.map(function (c) { return { fieldCaption: c }; }) })
+          .then(function (result) {
+            var rows = result && Array.isArray(result.data) ? result.data : [];
+            return rows.map(function (r) {
+              var o = {};
+              FIELDS.forEach(function (f, i) { o[f] = r[captions[i]]; });
+              return o;
+            });
+          });
+      });
     });
   }
 

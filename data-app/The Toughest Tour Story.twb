@@ -14,13 +14,92 @@
   </document-format-change-manifest>
   <repository-location id='template' path='/workbooks' revision='1.0' />
   <preferences />
-  <datasources />
+  <datasources>
+    <datasource caption='the_toughest_tour_scrollytelly' inline='true' name='sqlproxy.0tdfscrolly1b7608adba07' version='18.1'>
+      <repository-location derived-from='https://10ax.online.tableau.com/t/tilpulsebeta/datasources/the_toughest_tour_scrollytelly?rev=1.0' id='the_toughest_tour_scrollytelly' path='/t/tilpulsebeta/datasources' revision='1.0' site='tilpulsebeta' />
+      <connection channel='https' class='sqlproxy' dbname='the_toughest_tour_scrollytelly' directory='/dataserver' port='443' server='10ax.online.tableau.com' server-ds-friendly-name='the_toughest_tour_scrollytelly' username=''>
+        <relation name='sqlproxy' table='[sqlproxy]' type='table' />
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>year</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[year]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>year</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Metric</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Metric]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Metric</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[Value]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>Value</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>raw_value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[raw_value]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>raw_value</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>tooltip</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[tooltip]</local-name>
+            <parent-name>[sqlproxy]</parent-name>
+            <remote-alias>tooltip</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='year' datatype='integer' name='[year]' role='dimension' type='ordinal' />
+      <column caption='metric' datatype='string' name='[Metric]' role='dimension' type='nominal' />
+      <column caption='value' datatype='real' name='[Value]' role='measure' type='quantitative' />
+      <column caption='raw_value' datatype='real' name='[raw_value]' role='measure' type='quantitative' />
+      <column caption='tooltip' datatype='string' name='[tooltip]' role='dimension' type='nominal' />
+    </datasource>
+  </datasources>
   <worksheets>
     <worksheet name='The Toughest Tour Story'>
       <repository-location id='Sheet1' path='/workbooks/template' revision='' />
       <table>
         <view>
-          <datasources />
+          <datasources>
+            <datasource caption='the_toughest_tour_scrollytelly' name='sqlproxy.0tdfscrolly1b7608adba07' />
+          </datasources>
+          <datasource-dependencies datasource='sqlproxy.0tdfscrolly1b7608adba07'>
+            <column caption='year' datatype='integer' name='[year]' role='dimension' type='ordinal' />
+            <column caption='metric' datatype='string' name='[Metric]' role='dimension' type='nominal' />
+            <column caption='value' datatype='real' name='[Value]' role='measure' type='quantitative' />
+            <column caption='raw_value' datatype='real' name='[raw_value]' role='measure' type='quantitative' />
+            <column caption='tooltip' datatype='string' name='[tooltip]' role='dimension' type='nominal' />
+          </datasource-dependencies>
           <aggregation value='true' />
         </view>
         <style />
@@ -30,7 +109,7 @@
               <breakdown value='auto' />
             </view>
             <mark class='VizExtension' />
-            <add-in add-in-id='com.tableau.mcp.the-toughest-tour-story' extension-url='tableaulocalext:///com.tableau.mcp.the-toughest-tour-story/content/index.html' extension-version='1.0.0' instance-id='A1B2C3D4E5F60718293A4B5C6D7E8F90'>
+            <add-in add-in-id='com.tableau.mcp.the-toughest-tour-story' extension-url='tableaulocalext:///com.tableau.mcp.the-toughest-tour-story/content/index.html' extension-version='1.0.1' instance-id='A1B2C3D4E5F60718293A4B5C6D7E8F90'>
               <instance-settings />
               <type-settings>
                 <worksheet />
@@ -69,7 +148,7 @@
   <referenced-extensions>
     <referenced-extension>
       <manifest manifest-version='0.1'>
-        <worksheet-extension extension-version='1.0.0' id='com.tableau.mcp.the-toughest-tour-story'>
+        <worksheet-extension extension-version='1.0.1' id='com.tableau.mcp.the-toughest-tour-story'>
           <default-locale>en_US</default-locale>
           <name>The Toughest Tour Story</name>
           <description>Embedded workbook extension.</description>

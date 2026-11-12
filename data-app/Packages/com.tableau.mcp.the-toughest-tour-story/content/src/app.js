@@ -698,7 +698,10 @@
   });
 
   function media() {
-    fetch('media/media.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
+    // Tableau Cloud sandboxes the extension (opaque origin, no CORS), so fetch() of its own files fails there;
+    // build.py package bakes media.json into media/media.js as window.TDF_MEDIA.
+    (window.TDF_MEDIA ? Promise.resolve(window.TDF_MEDIA)
+      : fetch('media/media.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }))
       .then(function (m) {
         var credits = document.getElementById('credits');
         Array.prototype.forEach.call(document.querySelectorAll('figure.media'), function (fig) {
@@ -728,6 +731,8 @@
     p.appendChild(html('span', 'ph-want', e.wanted || e.alt || ''));
     fig.appendChild(p);
   }
+  // Packaged file name, or a full https URL (Cloud won't serve packaged video, so the clip is hosted elsewhere)
+  function mediaUrl(f) { return /^https:\/\//.test(f) ? f : 'media/' + f; }
   var caps = {}; // slot -> media entry, for the on-screen photo source
   function fill(fig, e) {
     caps[fig.dataset.slot] = e;
@@ -747,11 +752,11 @@
         m = html('video');
         m.controls = true; m.muted = true; m.loop = true; m.playsInline = true; m.preload = 'none';
         m.setAttribute('aria-label', e.alt || 'Video');
-        if (e.poster) { m.poster = 'media/' + e.poster; }
+        if (e.poster) { m.poster = mediaUrl(e.poster); }
         if (e.captions) {
           var tr = html('track');
           tr.kind = 'captions'; tr.srclang = 'en'; tr.label = 'English'; tr.default = true;
-          tr.src = 'media/' + e.captions;
+          tr.src = mediaUrl(e.captions);
           m.appendChild(tr);
         }
         bg = html('video');
@@ -764,8 +769,12 @@
         bg = html('img');
         bg.alt = ''; bg.loading = 'lazy';
       }
-      m.addEventListener('error', function () { placeholder(fig, e); });
-      m.src = 'media/' + e.src;
+      // one retry first: Tableau Cloud's package host drops the odd request with a 500
+      m.addEventListener('error', function () {
+        if (!m.dataset.retried) { m.dataset.retried = '1'; m.src = mediaUrl(e.src) + (/\?/.test(e.src) ? '&' : '?') + 'retry=1'; return; }
+        placeholder(fig, e);
+      });
+      m.src = mediaUrl(e.src);
       if (e.pos) { m.style.objectPosition = e.pos; bg.style.objectPosition = e.pos; }
       fig.appendChild(m);
       // full-screen copy behind the story (desktop); the in-step copy keeps the alt text for screen readers
