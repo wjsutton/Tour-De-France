@@ -16,6 +16,9 @@ winners <- read.csv('https://raw.githubusercontent.com/rfordatascience/tidytuesd
 # for 2021 figure quoted here is 3414 https://www.letour.fr/en/rankings/stage-21
 # 2021 history figure is 3383 - believe it is missing stage 20's 30.8km time trial
 df <- readxl::read_excel('data/tour_de_france.xlsx', sheet = 'Sheet1')
+# xlsx Entrants for 2017-19 (219, 218, 218) are not the start lists: 22 teams of 9 in 2017, of 8 from 2018.
+# Starters from Wikipedia 'List of teams and cyclists in the YYYY Tour de France' (finishers already match)
+df$Entrants[df$Year %in% 2017:2019] <- c(198, 176, 176)[match(df$Year[df$Year %in% 2017:2019], 2017:2019)]
 
 # 2022 onwards from https://www.letour.fr/en/history and Wikipedia 'YYYY Tour de France'
 # distance is as raced (letour.fr history shows the planned distance)

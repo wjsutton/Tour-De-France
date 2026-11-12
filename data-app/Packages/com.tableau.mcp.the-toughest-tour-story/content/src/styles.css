@@ -1,0 +1,467 @@
+/* The Toughest Tour — "Carnet de route" v2.
+   A race road-book: ink cover, paper pages, signage type, km rulers. The wheels are the only
+   colour on the page. Drop-in for src/styles.css; class names unchanged.
+   Fonts (OFL): Barlow Condensed (display/labels), Source Serif 4 (text). @font-face lives in
+   fonts.css next to this file so the sandbox loads only local .woff2. */
+
+/* ---- tokens ---------------------------------------------------------------------------------- */
+:root, [data-theme="light"] {
+  --paper: #f3eee3;     /* page */
+  --paper-2: #e9e2d2;   /* insets, placeholders, table head */
+  --ink: #1d1b17;       /* text 14.9:1 */
+  --ink-2: #4a453c;     /* captions 8.2:1 */
+  --muted: #635c50;     /* labels, credits, dim years 5.7:1 */
+  --rule: #1d1b17;      /* structural rules */
+  --hair: #d3c9b5;      /* decorative hairlines only, never text */
+  --focus: #1f5fd1;     /* 5.0:1, not a wedge hue */
+  --cover: #1d1b17;     /* masthead ground */
+  --cover-ink: #f3eee3;
+  --cover-muted: #c9c1b1;
+  --tip-bg: #1d1b17;
+  --tip-ink: #f3eee3;
+  --ghost-fill: rgba(29, 27, 23, 0.035);
+  --tyre: #333333;
+  --rim: #f5f5f5;
+  --hub: #ffffff;
+  --wedge-stroke: rgba(29, 27, 23, 0.6);
+  --pace: #5ee06a;
+  --distance: #69d3e0;
+  --abandons: #e03d75;
+  --elevation: #e08239;
+  --competition: #faeb5c;
+
+  --sign: "Barlow Condensed", "Bahnschrift", "DIN Condensed", "Arial Narrow", sans-serif;
+  --text: "Source Serif 4", "Iowan Old Style", "Charter", "Sitka Text", Georgia, serif;
+  --fs-h1: clamp(3.75rem, 11vw, 10rem);
+  --fs-h2: clamp(2rem, 3.2vw, 2.75rem);
+  --fs-body: 1.0625rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
+  --track: 0.14em;
+  --gutter: clamp(1rem, 4.5vw, 4.5rem);
+  --measure: 30rem;
+  --ease: cubic-bezier(0.6, 0, 0.2, 1);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #16140f; --paper-2: #211e17; --ink: #efe9dc; --ink-2: #c9c1b1; --muted: #9d9585;
+    --rule: #efe9dc; --hair: #3a352a; --focus: #8ab4ff; --cover: #211e17; --cover-ink: #efe9dc;
+    --cover-muted: #9d9585; --tip-bg: #efe9dc; --tip-ink: #16140f; --ghost-fill: rgba(239, 233, 220, 0.04);
+    --wedge-stroke: rgba(22, 20, 15, 0.65); color-scheme: dark;
+  }
+}
+[data-theme="dark"] {
+  --paper: #16140f; --paper-2: #211e17; --ink: #efe9dc; --ink-2: #c9c1b1; --muted: #9d9585;
+  --rule: #efe9dc; --hair: #3a352a; --focus: #8ab4ff; --cover: #211e17; --cover-ink: #efe9dc;
+  --cover-muted: #9d9585; --tip-bg: #efe9dc; --tip-ink: #16140f; --ghost-fill: rgba(239, 233, 220, 0.04);
+  --wedge-stroke: rgba(22, 20, 15, 0.65); color-scheme: dark;
+}
+
+/* ---- base ------------------------------------------------------------------------------------ */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body, [data-theme] { background: var(--paper); color: var(--ink); }
+body { margin: 0; font: var(--fs-body)/1.6 var(--text); font-optical-sizing: auto; -webkit-font-smoothing: antialiased; }
+h1, h2, .km, summary, th, .tip strong, .ph-tag, .credit, .legend b {
+  font-family: var(--sign);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: var(--paper); padding: 0.5rem 0.9rem; z-index: 10; }
+.skip:focus { top: 1rem; }
+
+/* ---- masthead: the 1954 newsreel plays at once; the title arrives at 1 s, the question at 2 s ---- */
+.masthead {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.5rem var(--gutter) 14vh;
+  background: var(--cover);
+  color: var(--cover-ink);
+  overflow: hidden;
+}
+.masthead-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.masthead::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.3) 45%, transparent 70%),
+              linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 40%),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent 25%);
+}
+.masthead > :not(.masthead-video) { position: relative; z-index: 2; }
+/* THE / TOUGHEST / TOUR, each line sized by app.js to the same width, so the block reads as a square */
+h1 {
+  width: min(84vw, 38rem, 70svh);
+  margin: 0 0 1.4rem;
+  font-weight: 800;
+  line-height: 0.78;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+  animation: rise 0.9s var(--ease) 1s both;
+}
+h1 .ln { display: block; width: max-content; white-space: nowrap; }
+h1 .ln:first-child { line-height: 1; margin: 0 auto 0.04em; } /* THE: the small word over the lockup */
+.standfirst { width: min(84vw, 38rem, 70svh); text-align: center; margin: 0; font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.3; animation: rise 0.9s var(--ease) 2s both; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+.masthead-credit { position: absolute !important; right: var(--gutter); bottom: 1.5rem; margin: 0; font-size: var(--fs-xs); color: var(--cover-muted); }
+
+/* ---- story: steps left, sticky stage right --------------------------------------------------- */
+.story {
+  display: grid;
+  grid-template-columns: minmax(18rem, var(--measure)) 1fr;
+  column-gap: clamp(1rem, 3.5vw, 3.5rem);
+  padding: 0 var(--gutter);
+}
+.stage { grid-column: 2; grid-row: 1; position: sticky; top: 0; height: 100vh; align-self: start; display: flex; flex-direction: column; }
+#chart { display: block; width: 100%; flex: 1; min-height: 0; overflow: visible; }
+.motion, .btn { font: 700 0.75rem/1 var(--sign); letter-spacing: var(--track); text-transform: uppercase; color: var(--ink);
+  background: none; border: 1.5px solid currentColor; padding: 0.5rem 0.65rem; cursor: pointer; }
+/* a small, quiet pause control: the film loops, so it must be stoppable (WCAG 2.2.2) */
+.motion { position: fixed; right: 12px; bottom: 12px; z-index: 5; padding: 0.4rem 0.55rem; font-size: 0.6875rem;
+  background: color-mix(in srgb, var(--paper) 85%, transparent); border-width: 1px; opacity: 0.7; transition: opacity 0.3s; }
+.motion:hover, .motion:focus-visible { opacity: 1; }
+.motion::before { content: "● "; }
+.motion[aria-pressed="false"]::before { content: "○ "; }
+.seg { display: inline-flex; border: 1.5px solid var(--ink); margin-top: 0.4rem; }
+.seg button { font: 700 0.8125rem/1 var(--sign); letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6rem 0.9rem; min-height: 2.5rem;
+  background: none; color: var(--ink); border: 0; cursor: pointer; }
+.seg button + button { border-left: 1.5px solid var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.motion:focus-visible, .btn:focus-visible, .seg button:focus-visible, .find input:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+html.still *, html.still *::before, html.still *::after { transition: none !important; animation: none !important; }
+
+/* Find your Tour: a native number input. */
+.find { display: flex; align-items: flex-end; gap: 0.9rem; margin: 0 0 0.9rem; }
+.find label { font: 700 0.8125rem/1.25 var(--sign); letter-spacing: var(--track); text-transform: uppercase; color: var(--muted); max-width: 8rem; }
+.find input { width: 4.4ch; font: 800 2.75rem/1 var(--sign); font-variant-numeric: lining-nums tabular-nums; color: var(--ink);
+  background: transparent; border: 0; border-bottom: 3px solid var(--ink); padding: 0 0 2px; border-radius: 0; -moz-appearance: textfield; }
+.find input::-webkit-inner-spin-button, .find input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.steps { grid-column: 1; grid-row: 1; padding: 20vh 0 40vh; }
+.step {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.62; /* still ~5:1, so a half-scrolled step stays readable */
+  transition: opacity 0.4s;
+}
+.step.active { opacity: 1; }
+.step:focus { outline: none; }
+.card { max-width: var(--measure); }
+.card::before { /* each step opens like a road-book page: a ruled km strip */
+  content: "";
+  display: block;
+  width: 100%;
+  max-width: var(--measure);
+  height: 0.5rem;
+  margin-bottom: 1.1rem;
+  color: var(--rule);
+  border-top: 2px solid var(--rule);
+  background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 2.5rem) top left / 100% 0.5rem no-repeat;
+}
+.km { /* direction-sign tag */
+  align-self: flex-start;
+  margin: 0 0 0.85rem;
+  padding: 0.28rem 1.3rem 0.28rem 0.6rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  clip-path: polygon(0 0, calc(100% - 0.65rem) 0, 100% 50%, calc(100% - 0.65rem) 100%, 0 100%);
+}
+h2 { margin: 0 0 0.75rem; font-size: var(--fs-h2); font-weight: 700; line-height: 1; letter-spacing: -0.005em; text-wrap: balance; }
+.step p { margin: 0 0 0.8rem; text-wrap: pretty; }
+.note { color: var(--muted); font-size: 0.9375rem; }
+
+.legend { list-style: none; padding: 0; margin: 0.25rem 0 1rem; border-bottom: 1px solid var(--hair); }
+.legend li { position: relative; padding: 0.45rem 0 0.45rem 1.9rem; border-top: 1px solid var(--hair); line-height: 1.45; }
+.legend li .sw { position: absolute; left: 0.1rem; top: 0.62rem; margin: 0; }
+.legend b { font-size: 1.0625rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.sw { /* a quarter-wheel wedge, outlined so pale colours hold on paper */
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.45em;
+  vertical-align: -0.1em;
+  border: 1px solid var(--wedge-stroke);
+  border-radius: 0 100% 0 0;
+}
+.sw-winners_avg_speed { background: var(--pace); }
+.sw-total_distance_in_km { background: var(--distance); }
+.sw-percent_abandons { background: var(--abandons); }
+.sw-highest_elevation_in_m { background: var(--elevation); }
+.sw-led_percent { background: var(--competition); }
+
+/* ---- wheels (geometry fixed: hub r 5.661, tyre r 6.022, rim r 5.772, hit r 6.4) --------------- */
+.wheel { transition: transform 0.9s var(--ease), opacity 0.5s; cursor: default; outline: none; }
+.wheel.off { opacity: 0; pointer-events: none; }
+.wheel.muted { opacity: 0.35; }
+.hub { fill: var(--hub); }
+.tyre { fill: none; stroke: var(--tyre); stroke-width: 0.352; }
+.rim { fill: none; stroke: var(--rim); stroke-width: 0.148; }
+.hit { fill: transparent; stroke: none; transition: stroke-width 0.15s; }
+.wheel:hover .hit { stroke: var(--ink); stroke-width: 1.25px; vector-effect: non-scaling-stroke; }
+.wheel:focus-visible .hit { stroke: var(--focus); stroke-width: 3px; vector-effect: non-scaling-stroke; }
+.wedge { stroke: var(--wedge-stroke); stroke-width: 0.9; stroke-linejoin: round; vector-effect: non-scaling-stroke; transition: opacity 0.5s; }
+.m-winners_avg_speed { fill: var(--pace); }
+.m-total_distance_in_km { fill: var(--distance); }
+.m-percent_abandons { fill: var(--abandons); }
+.m-highest_elevation_in_m { fill: var(--elevation); }
+.m-led_percent { fill: var(--competition); }
+[data-hi="winners_avg_speed"] .wedge:not(.m-winners_avg_speed),
+[data-hi="total_distance_in_km"] .wedge:not(.m-total_distance_in_km),
+[data-hi="percent_abandons"] .wedge:not(.m-percent_abandons),
+[data-hi="highest_elevation_in_m"] .wedge:not(.m-highest_elevation_in_m),
+[data-hi="led_percent"] .wedge:not(.m-led_percent) { opacity: 0.12; }
+
+/* ---- annotation: ink only, haloed in paper so labels read over anything ---------------------- */
+.notes text {
+  fill: var(--ink);
+  font-family: var(--sign);
+  font-variant-numeric: lining-nums tabular-nums;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  animation: fade 0.6s 0.35s both;
+}
+.notes .year { font-size: 19px; font-weight: 700; letter-spacing: 0.02em; }
+.notes .year.dim { fill: var(--muted); font-weight: 500; }
+.notes .axis { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; fill: var(--muted); }
+.notes .gap-year { font-size: 16px; font-weight: 700; fill: var(--muted); }
+.notes .gap-label { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; fill: var(--muted); }
+.notes .factor { font-size: 14px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.notes .ghost { fill: var(--ghost-fill); stroke: var(--muted); stroke-width: 1.25; stroke-dasharray: 1 5; stroke-linecap: round; vector-effect: non-scaling-stroke; animation: fade 0.6s 0.35s both; }
+.notes .value { font-size: 15px; font-weight: 600; fill: var(--ink-2); }
+.notes .rankno { font-size: 11px; font-weight: 700; fill: var(--muted); }
+.notes .rankno.strong { fill: var(--ink); font-size: 13px; }
+.notes .eraname { font-size: 26px; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; }
+.notes .yearlabel { font-size: 22px; font-weight: 800; letter-spacing: 0.04em; }
+.notes .road { stroke: var(--ink); stroke-width: 2; }
+.wedge.pending { opacity: 0; }
+
+/* Riders: one dot per 1919 starter. Pink = abandoned, the same pink as the wedge they become. */
+.rider { fill: var(--paper); stroke: var(--ink); stroke-width: 1.25; transition: transform 0.9s var(--ease), fill 0.4s, opacity 0.5s, r 0.9s var(--ease); }
+.rider.out { fill: var(--abandons); stroke: var(--wedge-stroke); }
+.rider.off { opacity: 0; }
+.rider.winner { fill: var(--competition); stroke: var(--ink); stroke-width: 2; }
+.notes .grouplabel { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.notes .quitlabel, .story.overlay .notes .quitlabel { fill: var(--abandons); }
+.frame { transition: transform 0.9s var(--ease); }
+.story.overlay .motif path:not(.seen) { stroke: rgba(255, 255, 255, 0.5); fill: rgba(255, 255, 255, 0.06); }
+.story.overlay .motif .tyre-o { stroke: #fff; }
+.notes .winlabel { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; animation: fade 0.6s 0.9s both; }
+
+/* bars over time: one per Tour, grown from the baseline */
+.bar { stroke: var(--wedge-stroke); stroke-width: 0.6; vector-effect: non-scaling-stroke; transform-box: fill-box; transform-origin: 50% 100%;
+  transition: transform 0.9s var(--ease), fill 0.5s, opacity 0.5s; }
+.bar.dim { opacity: 0.5; }
+.bar.off { opacity: 0; }
+.notes .bartitle { font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.notes .factor.dim { fill: var(--muted); font-weight: 500; }
+
+/* the wheel motif: five equal wedges, filled in as the story meets each measure */
+.motif { transition: transform 0.9s var(--ease), opacity 0.5s; }
+.motif.off { opacity: 0; }
+.motif path { stroke: var(--wedge-stroke); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.4; transition: opacity 0.5s, fill 0.5s; }
+.motif path:not(.seen) { fill: var(--ghost-fill); stroke: var(--muted); stroke-dasharray: 1 4; stroke-linecap: round; opacity: 1; }
+.motif path.hi { opacity: 1; }
+.motif .tyre-o { fill: none; stroke: var(--tyre); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+@keyframes fade { from { opacity: 0; } }
+
+/* ---- tooltip: inverted ink card -------------------------------------------------------------- */
+.tip {
+  position: absolute;
+  width: max-content;
+  max-width: 18.5rem;
+  padding: 0.7rem 0.85rem 0.6rem;
+  background: var(--tip-bg);
+  color: var(--tip-ink);
+  font: 0.8125rem/1.4 var(--text);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 5;
+}
+.tip strong { display: block; margin-bottom: 0.4rem; padding-bottom: 0.35rem; border-bottom: 1px solid currentColor; font-size: 1.75rem; font-weight: 800; line-height: 1; }
+.tip-line { display: grid; grid-template-columns: 1.05rem 1fr; column-gap: 0.45rem; margin: 0.3rem 0; }
+.tip-line .sw { margin: 0.15rem 0 0; width: 0.85rem; height: 0.85rem; }
+
+/* ---- media: archive prints and 16:9 film ----------------------------------------------------- */
+.media { margin: 1.25rem 0 0; }
+.media img, .media video, .media iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 0;
+  background: var(--paper-2);
+  outline: 1px solid var(--rule);
+  outline-offset: -1px;
+}
+.media iframe { aspect-ratio: 16 / 9; }
+.media figcaption {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--hair);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.credit { font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.03em; color: var(--muted); }
+.credit cite { font-style: italic; font-family: var(--text); letter-spacing: 0; }
+.placeholder {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  padding: 0.9rem;
+  border: 1px solid var(--hair);
+  background: repeating-linear-gradient(135deg, transparent 0 9px, var(--paper-2) 9px 18px);
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+.ph-tag { font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--track); text-transform: uppercase; color: var(--ink); }
+
+/* ---- appendix -------------------------------------------------------------------------------- */
+.appendix { padding: 3rem var(--gutter) 5rem; border-top: 3px solid var(--rule); font-size: 0.9375rem; }
+.appendix h2 { font-size: 1.5rem; margin-top: 2rem; }
+summary { cursor: pointer; font-size: 1.25rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.table-wrap { max-height: 70vh; overflow: auto; margin-top: 1rem; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+caption { text-align: left; color: var(--muted); padding-bottom: 0.5rem; }
+th, td { padding: 0.3rem 0.8rem; border-bottom: 1px solid var(--hair); text-align: right; }
+th { font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: var(--fs-sm); }
+thead th { position: sticky; top: 0; background: var(--paper-2); }
+.error { padding: 2rem; color: #b00020; }
+
+/* ---- photo steps: photo first, headline over it; the data follows once the photos have played ---- */
+.story { position: relative; clip-path: inset(0); } /* clips the fixed backdrop to the story */
+.backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.backdrop img, .backdrop video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0;
+  transition: opacity 0.8s, height 0.8s var(--ease), object-position 0.8s var(--ease); }
+.backdrop .on { opacity: 1; }
+.backdrop::after { /* scrim: headline corner (top-left) and caption corner (bottom-right) only, subject stays clear */
+  content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s;
+  background: radial-gradient(ellipse at 0% 0%, rgba(0, 0, 0, 0.72), transparent 55%),
+              radial-gradient(ellipse at 100% 100%, rgba(0, 0, 0, 0.7), transparent 40%);
+}
+.story.photo .backdrop::after { opacity: 1; }
+/* overlay: the Départ text and graphics share the left side, shaded top to bottom and tapering into the photo */
+.story.overlay .backdrop::after { opacity: 1;
+  background: radial-gradient(ellipse at 100% 100%, rgba(0, 0, 0, 0.6), transparent 35%),
+              linear-gradient(to right, rgba(10, 9, 8, 0.86) 0%, rgba(10, 9, 8, 0.8) 46%, rgba(10, 9, 8, 0.45) 55%, rgba(10, 9, 8, 0) 68%); }
+.story.overlay .step:not(.active) { opacity: 0; }
+.story.overlay .step.active .card { color: #fff; text-shadow: 0 1px 14px rgba(0, 0, 0, 0.8); }
+.story.overlay .step.active .note { color: rgba(255, 255, 255, 0.85); }
+.story.overlay .find label { color: rgba(255, 255, 255, 0.78); }
+.story.overlay .find input { color: #fff; border-bottom-color: #fff; }
+.story.overlay .notes text { fill: #fff; stroke: rgba(0, 0, 0, 0.6); }
+.story.overlay .notes .gap-label, .story.overlay .notes .value { fill: rgba(255, 255, 255, 0.88); }
+.story.overlay .notes .road { stroke: #fff; }
+.story.overlay .rider { fill: rgba(255, 255, 255, 0.14); stroke: #fff; }
+.story.overlay .rider.out { fill: var(--abandons); stroke: rgba(0, 0, 0, 0.5); }
+.story.overlay .rider.winner { fill: var(--competition); stroke: #000; }
+.steps { position: relative; z-index: 1; }
+.stage { z-index: 1; }
+.card { display: flex; flex-direction: column; max-width: calc(var(--measure) + 3rem); padding: 1.25rem 1.5rem 0.75rem; margin-inline: -1.5rem; }
+/* the in-step copy of each photo is for screen readers; the backdrop shows it */
+.card .media img, .card .media video { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.card .media { margin-top: 0.5rem; }
+.card .media:not(.now) { display: none; } /* one caption at a time: the photo behind */
+/* a photo step is one screen per photo, then one for the data; the card holds still meanwhile */
+.step.multi { min-height: calc(var(--n) * 80vh); justify-content: flex-start; }
+.step.multi .card { position: sticky; top: 30vh; }
+
+/* while a photo shows: no chart, no paper, just the headline and caption over the photo */
+#chart { transition: opacity 0.5s; }
+.story.photo #chart, .story.photo .tip { opacity: 0; visibility: hidden; }
+.story.photo .step:not(.active) { opacity: 0; }
+.story.photo .step.multi.active .card, .story.overlay .step.multi.active .card { top: 9vh; }
+.story.photo .step.active .km, .story.overlay .step.active .km { display: none; }
+.story.photo .step.active .card::before, .story.overlay .step.active .card::before { display: none; }
+.story.photo .step.active .card { color: #fff; text-shadow: 0 1px 14px rgba(0, 0, 0, 0.7); }
+.story.photo .step.active .card::before { color: #fff; border-top-color: #fff; }
+.story.photo .step.active .card > :not(.km):not(.hl):not(.media):not(.yr) { display: none; }
+.story.photo .step.active h2.hl { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+.story.photo .step.active p.hl { font: 600 clamp(1.4rem, 2.4vw, 2rem)/1.2 var(--text); }
+.story.photo .step.active .hl b { color: inherit; }
+.story.photo .step.active .media figcaption, .story.overlay .step.active .media figcaption { color: rgba(255, 255, 255, 0.92); border-top-color: rgba(255, 255, 255, 0.5); }
+.story.photo .step.active .credit, .story.overlay .step.active .credit { color: rgba(255, 255, 255, 0.8); }
+.story.intro .step.active .card > :not(.km):not(.hl):not(.yr):not(.media) { display: none; }
+.win { color: var(--competition); } /* the winner, in the yellow of his dot */
+/* the source of the photo on screen, bottom-right; it follows the photo, not the text */
+.bgcap { position: fixed; right: 1.5rem; bottom: 3.4rem; z-index: 2; display: grid; gap: 0.15rem; max-width: 26rem; margin: 0;
+  text-align: right; font-size: var(--fs-sm); line-height: 1.4; color: rgba(255, 255, 255, 0.92); text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
+  opacity: 0; transition: opacity 0.4s; pointer-events: none; }
+.bgcap .credit { color: rgba(255, 255, 255, 0.78); }
+.story.pinned.photo .bgcap.on, .story.pinned.overlay .bgcap.on { opacity: 1; }
+@media (min-width: 52.0625rem) { /* the caption sits in the bottom-right corner, away from the headline */
+  .story.photo .step.active .media.now figcaption, .story.overlay .step.active .media.now figcaption { display: none; } /* #bgcap shows it */
+}
+/* after the photos: the chart first, with only the headline; the text follows on the next screen */
+.story.datafirst .step.active .card > :not(.km):not(.hl):not(.yr) { display: none; }
+/* Départ: the year heads the text */
+.yr { margin: 0 0 0.2rem; font: 800 clamp(2.4rem, 4.6vw, 4rem)/0.95 var(--sign); letter-spacing: 0.02em; }
+@media (min-width: 52.0625rem) {
+  /* over a photo the active text is pinned top-left, so it never moves between screens; the graphics sit under it */
+  .story.photo .step.active .card, .story.overlay .step.active .card { position: fixed; top: 7vh; left: var(--gutter); width: min(32rem, 38vw); margin: 0; padding: 0; }
+  .story:not(.pinned) .step.active .card, .story.overlay:not(.pinned) #chart { opacity: 0; } /* until the story fills the screen */
+  .story .step .card { transition: opacity 0.4s; }
+  .story.photo .step.active h2.hl, .story.overlay .step.active h2.hl { font-size: clamp(2.2rem, 3.6vw, 3.2rem); }
+}
+
+/* ---- small screens: chart pinned to the top, text slides up underneath it -------------------- */
+@media (max-width: 52rem) {
+  .story { display: flex; flex-direction: column; padding: 0; }
+  .stage {
+    order: -1;
+    align-self: stretch;
+    height: 56vh;
+    height: 56svh; /* steady when the mobile URL bar hides */
+    z-index: 2;    /* opaque and above the steps: text passes under, never over, the wheels */
+    background: var(--paper);
+    border-bottom: 2px solid var(--rule);
+    box-shadow: 0 12px 14px -12px rgba(0, 0, 0, 0.3);
+  }
+  .steps { position: relative; z-index: 1; padding: 1.5rem var(--gutter) 40vh; }
+  .step { min-height: 70vh; justify-content: flex-start; }
+  .card, .card::before { max-width: none; }
+  .card { padding: 0; margin: 0; }
+  .step.multi .card { top: 58svh; } /* under the pinned chart */
+  .story.photo .step.active .card, .story.overlay .step.active .card,
+  .story.photo .step.multi.active .card, .story.overlay .step.multi.active .card { position: sticky; top: 58svh; }
+  .story.photo .stage { background: transparent; border-bottom-color: transparent; box-shadow: none; }
+  .story.overlay .stage { background: #0d0c0a; border-bottom-color: rgba(255, 255, 255, 0.25); } /* graphics on dark above, photo below */
+  .story .card .media figcaption { display: none; } /* #bgcap shows it */
+  .bgcap { right: 12px; left: 12px; bottom: 3.2rem; max-width: none; font-size: 0.75rem; }
+  .story.overlay .backdrop::after { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.75)); }
+  .notes .year, .notes .factor, .notes .value { font-size: 13px; }
+  .notes .axis { font-size: 11px; }
+  .notes .eraname { font-size: 17px; }
+  .tip { /* docks under the chart, over the text, so it never hides a wheel */
+    left: 0.75rem !important;
+    right: 0.75rem;
+    top: calc(100% + 0.5rem) !important;
+    max-width: none;
+    width: auto;
+  }
+  .masthead-credit { left: var(--gutter); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

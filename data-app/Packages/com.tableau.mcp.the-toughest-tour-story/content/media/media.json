@@ -1,0 +1,240 @@
+{
+  "_readme": "One entry per figure[data-slot]. A step with several figures swaps the backdrop as you scroll through it, in HTML order. type: image | video (self-hosted; a silent clip needs no captions, one with speech needs a .vtt in captions). pos is the CSS object-position focal point for crops. credit {title, author, source, licence, url} in TASL form builds the Sources list. Photos are 1280px Wikimedia Commons thumbnails; check the licence on the file page before swapping one.",
+  "1919": {
+    "type": "image",
+    "src": "1919.jpg",
+    "alt": "Black-and-white photo: a rider leads the sprint on the Parc des Princes track, another close behind, as a crowd in caps and hats leans over the fence",
+    "caption": "The finish at the Parc des Princes, Paris, 27 July 1919. Jean Alavoine leads Luigi Lucotti and Honoré Barthélémy.",
+    "credit": {
+      "title": "Parc des Princes, 27-7-19, arrivée du Tour de France",
+      "author": "Agence Rol",
+      "source": "Gallica / BnF via Wikimedia Commons",
+      "licence": "Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:Parc_des_Princes,_27-7-19,_arriv%C3%A9e_du_Tour_de_France,_en_t%C3%AAte_(Jean)_Alavoine_(Luigi_Natale)_Lucotti_(Honor%C3%A9)_Barth%C3%A9l%C3%A9my_-_btv1b53018231q.jpg"
+    }
+  },
+  "1919b": {
+    "type": "image",
+    "src": "1919b.jpg",
+    "alt": "Black-and-white photo: Firmin Lambot, mud-spattered and carrying a laurel wreath on his shoulder, rides a lap of honour past a packed grandstand",
+    "caption": "Firmin Lambot's lap of honour at the Parc des Princes, 27 July 1919.",
+    "credit": {
+      "title": "Parc des Princes, 27-7-19, tour d'honneur de (Firmin) Lambot vainqueur du Tour de France",
+      "author": "Agence Rol",
+      "source": "Gallica / BnF via Wikimedia Commons",
+      "licence": "Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:Parc_des_Princes,_27-7-19,_tour_d%27honneur_de_(Firmin)_Lambot_vainqueur_du_Tour_de_France_-_btv1b530182236.jpg"
+    }
+  },
+  "intro": {
+    "type": "image",
+    "src": "intro.jpg",
+    "alt": "A small breakaway climbs a mountain road between motorbikes, with fans in polka-dot shirts lining the grass banks on both sides",
+    "caption": "The breakaway on the Peyresourde, stage 14, 2025.",
+    "credit": {
+      "title": "Breakway with crowd in Peyresourde during stage 14 of Tour de France 2025",
+      "author": "Hugo LUC",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Breakway_with_crowd_in_Peyresourde_during_stage_14_of_Tour_de_France_2025.jpg"
+    }
+  },
+  "introb": {
+    "type": "image",
+    "src": "introb.jpg",
+    "alt": "Riders lean through a cobbled bend in Montmartre while fans in polka-dot shirts and hats press against the barriers, filming on their phones",
+    "caption": "Stage 21 climbs through Montmartre, Paris, 26 July 2026.",
+    "credit": {
+      "title": "Étape 21 Tour France 2026 Rue Saint Éleuthère - Paris XVIII (FR75) - 2026-07-26 - 186",
+      "author": "Chabe01",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:%C3%89tape_21_Tour_France_2026_Rue_Saint_%C3%89leuth%C3%A8re_-_Paris_XVIII_(FR75)_-_2026-07-26_-_186.jpg"
+    }
+  },
+  "1926": {
+    "type": "image",
+    "src": "1926.jpg",
+    "alt": "Black-and-white photo: a rider in goggles and a spare tyre slung over his shoulders climbs a dirt mountain road, followed by a car",
+    "caption": "Lucien Buysse on the Col d'Aubisque, Bayonne to Luchon, 1926.",
+    "credit": {
+      "title": "Tour de France cycliste - étape Bayonne-Luchon - Lucien Buysse dans le col de l'Aubisque",
+      "author": "Agence Meurisse",
+      "source": "Gallica / BnF via Wikimedia Commons",
+      "licence": "Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:Tour_de_France_cycliste_-_%C3%A9tape_Bayonne-Luchon_-_Lucien_Buysse_dans_le_col_de_l%27Aubisque_-_btv1b9025664d.jpg"
+    }
+  },
+  "1926b": {
+    "type": "image",
+    "src": "1926b.jpg",
+    "alt": "Black-and-white photo: a line of riders in goggles rounds a bend on a dirt road while villagers in caps watch from the verge",
+    "caption": "Staudaerts, Buysse and Cuvelier over the Col de Port, Luchon to Perpignan, 1926.",
+    "credit": {
+      "title": "Tour de France cycliste - étape Luchon-Perpignan - passage dans le col de Port, Staudaerts, Buysse et Cuvelier",
+      "author": "Agence Meurisse",
+      "source": "Gallica / BnF via Wikimedia Commons",
+      "licence": "Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:Tour_de_France_cycliste_-_%C3%A9tape_Luchon-Perpignan_-_passage_dans_le_col_de_Port,_Staudaerts,_Buysse_et_Cuvelier_-_btv1b9025665t.jpg"
+    }
+  },
+  "1926c": {
+    "type": "image",
+    "src": "1926c.jpg",
+    "alt": "Black-and-white photo: riders with spare tyres on their backs stretch out along a straight, dusty road through flat fields, an open car among them and a gendarme watching",
+    "caption": "At the Pont de Lunel, Perpignan to Toulon, 1926.",
+    "credit": {
+      "title": "Tour de France cycliste - étape Perpignan-Toulon - passage au Pont de Lunel",
+      "author": "Agence Meurisse",
+      "source": "Gallica / BnF via Wikimedia Commons",
+      "licence": "Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:Tour_de_France_cycliste_-_%C3%A9tape_Perpignan-Toulon_-_passage_au_Pont_de_Lunel_-_btv1b9025680h.jpg"
+    }
+  },
+  "1962": {
+    "type": "image",
+    "src": "1962.jpg",
+    "alt": "Bare, high mountain slopes and a winding road falling into a green valley under a wide blue sky",
+    "caption": "The view from the Cime de la Bonette, Mercantour National Park.",
+    "credit": {
+      "title": "Cime de la Bonette dans le parc du Mercantour",
+      "author": "JCosson",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Cime_de_la_Bonette_dans_le_parc_du_Mercantour.jpg"
+    }
+  },
+  "1968": {
+    "type": "image",
+    "src": "1968.jpg",
+    "alt": "Black-and-white photo: Jan Janssen in sunglasses holds a bouquet while well-wishers reach to shake his hand",
+    "caption": "Jan Janssen after winning the 1968 Tour on its final day.",
+    "credit": {
+      "title": "Jan Janssen winnaar van de Tour de France 1968",
+      "author": "Anefo",
+      "source": "Nationaal Archief via Wikimedia Commons",
+      "licence": "CC0",
+      "url": "https://commons.wikimedia.org/wiki/File:Jan_Janssen_winnaar_van_de_Tour_de_France_1968,_Bestanddeelnr_135-0699.jpg"
+    }
+  },
+  "merckx": {
+    "type": "image",
+    "src": "merckx.jpg",
+    "alt": "Black-and-white photo: riders sprint over a finish line painted on the road, past crowds packed behind barriers under the trees",
+    "caption": "The stage 2 finish in Maastricht, 30 June 1969, Merckx's first Tour. Julien Stevens wins.",
+    "credit": {
+      "title": "Finish van de 2e etappe in Maastricht 1e Julien Stevens, 2e Wil in het Veld",
+      "author": "Anefo",
+      "source": "Nationaal Archief via Wikimedia Commons",
+      "licence": "CC0",
+      "url": "https://commons.wikimedia.org/wiki/File:Finish_van_de_2e_etappe_in_Maastricht_1e_Julien_Stevens,_2e_Wil_in_het_Veld,_Bestanddeelnr_922-5882.jpg"
+    }
+  },
+  "merckxb": {
+    "type": "image",
+    "src": "merckxb.jpg",
+    "alt": "Black-and-white photo: Eddy Merckx sits on the bonnet of a car with both arms raised, flowers beside him, as his Faema teammates ride in behind",
+    "caption": "Merckx's first win, Vincennes, Paris, 1969.",
+    "credit": {
+      "title": "Eddy Mercks first victoy in 1969",
+      "author": "Xavier Rombouts",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Eddy_Mercks_first_victoy_in_1969.jpg"
+    }
+  },
+  "merckxc": {
+    "type": "image",
+    "src": "merckxc.jpg",
+    "alt": "Black-and-white photo: Eddy Merckx rides at the front of a line of riders past a sign for the town of Bergheim",
+    "caption": "Merckx at the front on stage 2, Mulhouse to Strasbourg, 1971.",
+    "credit": {
+      "title": "Stage 2, 1971 Tour de France",
+      "author": "Anefo",
+      "source": "Nationaal Archief via Wikimedia Commons",
+      "licence": "CC0",
+      "url": "https://commons.wikimedia.org/wiki/File:Stage_2,_1971_Tour_de_France.jpg"
+    }
+  },
+  "pace": {
+    "type": "image",
+    "src": "pace.jpg",
+    "alt": "The peloton rides along a country road past a cornfield, a rider in the yellow jersey among teammates in white near the front",
+    "caption": "The peloton on the Simacourbe climb, stage 13, 2024.",
+    "credit": {
+      "title": "Peloton during Simacourbe climb of Tour de France 2024 stage 13",
+      "author": "Hugo LUC",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Peloton_during_Simacourbe_climb_of_Tour_de_France_2024_stage_13.jpg"
+    }
+  },
+  "paceb": {
+    "type": "image",
+    "src": "paceb.jpg",
+    "alt": "A long single-file peloton stretches down a straight road under an avenue of plane trees",
+    "caption": "Strung out in the Combe de Savoie, stage 5, 2024.",
+    "credit": {
+      "title": "5e étape Tour de France 2024 - Peloton en Combe de Savoie",
+      "author": "Florian Pépellin",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:5e_%C3%A9tape_Tour_de_France_2024_-_Peloton_en_Combe_de_Savoie.JPG"
+    }
+  },
+  "pacec": {
+    "type": "image",
+    "src": "pacec.jpg",
+    "pos": "50% 8%",
+    "alt": "Tadej Pogačar in the yellow jersey, on a yellow bike, rides over cobbles past fans in polka-dot shirts",
+    "caption": "Tadej Pogačar on the final stage, 2026, the fastest Tour on record.",
+    "credit": {
+      "title": "Tadej Pogačar at 2026 Tour de France (Stage 21) (cropped)",
+      "author": "Kiril Simeonovski",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Tadej_Poga%C4%8Dar_at_2026_Tour_de_France_(Stage_21)_(cropped).jpg"
+    }
+  },
+  "era": {
+    "type": "video",
+    "src": "era.webm",
+    "poster": "era.jpg",
+    "alt": "Silent black-and-white newsreel: the peloton races through crowds in Dutch towns, along a harbour, past a lighthouse and round a seafront road",
+    "caption": "The 1954 Tour starts in Amsterdam, the first start outside France. Silent 45-second extract.",
+    "credit": {
+      "title": "De Tour de France 1954 (extract, sound removed)",
+      "author": "Polygoon-Profilti / Beeld en Geluid",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 3.0 NL",
+      "url": "https://commons.wikimedia.org/wiki/File:De_Tour_de_France_1954-29286.ogv"
+    }
+  },
+  "field2019": {
+    "type": "image",
+    "src": "field2019.jpg",
+    "alt": "A packed peloton in bright team kit sweeps through a cobbled street in Reims, spectators along the barriers",
+    "caption": "The peloton in Reims, 2019.",
+    "credit": {
+      "title": "Peloton Reims 95030",
+      "author": "G.Garitan",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Peloton_Reims_95030.JPG"
+    }
+  },
+  "bernal2019": {
+    "type": "image",
+    "src": "bernal2019.jpg",
+    "pos": "60% 40%",
+    "alt": "Egan Bernal in the yellow jersey, on a yellow bike, rides through Paris on the final stage",
+    "caption": "Egan Bernal, the 2019 winner, on the final stage in Paris.",
+    "credit": {
+      "title": "Egan Bernal Arrivée 21e étape Tour France 2019 Paris 1",
+      "author": "Chabe01",
+      "source": "Wikimedia Commons",
+      "licence": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Egan_Bernal_Arriv%C3%A9e_21e_%C3%A9tape_Tour_France_2019_Paris_1.jpg"
+    }
+  }
+}

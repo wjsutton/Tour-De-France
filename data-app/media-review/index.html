@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Media review</title>
+<!-- ponytail: dev-only review page, not shipped in the package. It hotlinks Wikimedia Commons previews;
+     anything picked gets downloaded into content/media/ so the app itself stays offline. -->
+<style>
+  :root { --paper: #f3eee4; --card: #fffdf8; --ink: #1d1b17; --muted: #635c50; --hair: #d8cfbd; --use: #1f7a3a; --maybe: #9a6a00; --no: #a3233f; --focus: #2b5fd9; }
+  @media (prefers-color-scheme: dark) { :root { --paper: #16140f; --card: #211e17; --ink: #efe9dc; --muted: #a69e8e; --hair: #3a352a; --use: #5ccf7d; --maybe: #e2b44a; --no: #f07a96; --focus: #8ab4ff; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 system-ui, sans-serif; }
+  header { position: sticky; top: 0; z-index: 2; background: var(--paper); border-bottom: 1px solid var(--hair); padding: 0.75rem 16px; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
+  h1 { font-size: 1.1rem; margin: 0; }
+  header p { margin: 0; color: var(--muted); font-size: 0.85rem; flex: 1 1 20rem; }
+  nav { display: flex; flex-wrap: wrap; gap: 0.35rem; width: 100%; }
+  nav a { font-size: 0.8rem; color: var(--ink); border: 1px solid var(--hair); padding: 0.15rem 0.5rem; text-decoration: none; }
+  main { padding: 0 16px 6rem; max-width: 1400px; margin: 0 auto; }
+  section { padding-top: 1.5rem; scroll-margin-top: 7rem; }
+  h2 { font-size: 1.05rem; margin: 0 0 0.75rem; }
+  h2 small { font-weight: 400; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .item { background: var(--card); border: 2px solid var(--hair); display: flex; flex-direction: column; }
+  .item.current { border-color: var(--ink); }
+  .item[data-v="use"] { border-color: var(--use); } .item[data-v="no"] { opacity: 0.45; } .item[data-v="maybe"] { border-color: var(--maybe); }
+  .prev { aspect-ratio: 4 / 3; background: #0002; display: grid; place-items: center; overflow: hidden; }
+  .prev img, .prev video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .prev audio { width: 92%; }
+  .meta { padding: 0.5rem 0.65rem; font-size: 0.8rem; display: grid; gap: 0.2rem; flex: 1; }
+  .meta b { font-size: 0.85rem; word-break: break-word; }
+  .meta span { color: var(--muted); }
+  .tag { justify-self: start; background: var(--ink); color: var(--card); font-size: 0.7rem; font-weight: 700; padding: 0.05rem 0.4rem; letter-spacing: 0.04em; }
+  .vote { display: flex; border-top: 1px solid var(--hair); }
+  .vote button { flex: 1; font: 600 0.8rem system-ui; padding: 0.45rem; background: none; color: var(--ink); border: 0; border-right: 1px solid var(--hair); cursor: pointer; }
+  .vote button:last-child { border-right: 0; }
+  .vote button[aria-pressed="true"][data-v="use"] { background: var(--use); color: #fff; }
+  .vote button[aria-pressed="true"][data-v="maybe"] { background: var(--maybe); color: #fff; }
+  .vote button[aria-pressed="true"][data-v="no"] { background: var(--no); color: #fff; }
+  .item input { margin: 0 0.65rem 0.65rem; font: inherit; font-size: 0.8rem; padding: 0.3rem; border: 1px solid var(--hair); background: var(--paper); color: var(--ink); }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .out { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 2px solid var(--ink); padding: 0.6rem 16px; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+  .out button { font: 700 0.85rem system-ui; padding: 0.45rem 0.8rem; background: var(--ink); color: var(--card); border: 0; cursor: pointer; }
+  .out span { color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Media review: The Toughest Tour</h1>
+  <p>Every free-licence candidate from Wikimedia Commons, grouped by story step. A black border marks what the app uses now. Mark each one Use, Maybe or No, add a note, then press <b>Copy my picks</b> and paste the result to Claude. Your choices are saved in this browser.</p>
+  <nav id="nav"></nav>
+</header>
+<main id="main"></main>
+<div class="out"><button type="button" id="copy">Copy my picks</button><span id="status" aria-live="polite"></span></div>
+<script>
+(function () {
+  // ponytail: obvious search noise, filtered here rather than re-querying Commons
+  var NOISE = /Arsenal|Dvorak|LL-Q|Kp207|Stèle|Collections Musée|ISS065|Old Bike|Standbeeld|PGM40|Koppelwedstrijd|Wielercriterium|Culture\(s\)|Nl-cyclisme|Nl-Tour/;
+  var KEY = 'tt-media-review';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function el(t, c, txt) { var n = document.createElement(t); if (c) n.className = c; if (txt != null) n.textContent = txt; return n; }
+
+  Promise.all([
+    fetch('candidates.json').then(function (r) { return r.json(); }),
+    fetch('../Packages/com.tableau.mcp.the-toughest-tour-story/content/media/media.json').then(function (r) { return r.json(); }).catch(function () { return {}; })
+  ]).then(function (res) {
+    var groups = res[0], current = res[1], main = document.getElementById('main'), nav = document.getElementById('nav');
+    groups.forEach(function (g) {
+      var cur = current[g.slot] && current[g.slot].credit ? current[g.slot].credit.url : '';
+      var items = g.items.filter(function (i) { return !NOISE.test(i.title); });
+      var c = current[g.slot];
+      if (cur && !items.some(function (i) { return decodeURI(i.page) === decodeURI(cur); })) {
+        items.unshift({ title: c.credit.title, page: cur, thumb: '../Packages/com.tableau.mcp.the-toughest-tour-story/content/media/' + c.src,
+          mime: 'image/jpeg', licence: c.credit.licence, artist: c.credit.author, desc: c.caption });
+      }
+      var sec = el('section'); sec.id = 's-' + g.slot;
+      var h = el('h2', '', g.step + ' '); h.appendChild(el('small', '', items.length + ' candidates'));
+      sec.appendChild(h);
+      var a = el('a', '', g.step.split(' · ')[0]); a.href = '#' + sec.id; nav.appendChild(a);
+      var grid = el('div', 'grid');
+      items.forEach(function (i) {
+        var k = g.slot + '|' + i.title, s = state[k] || {};
+        var card = el('article', 'item' + (cur && decodeURI(cur) === decodeURI(i.page) ? ' current' : ''));
+        if (s.v) card.dataset.v = s.v;
+        var prev = el('div', 'prev');
+        if (/^video|ogg$/.test(i.mime) && !/^audio/.test(i.mime) && i.mime !== 'application/ogg' || /\.ogv$/.test(i.title)) {
+          var v = el('video'); v.src = i.url; v.controls = true; v.preload = 'none'; if (i.thumb) v.poster = i.thumb; prev.appendChild(v);
+        } else if (/^audio/.test(i.mime) || /\.(ogg|opus)$/.test(i.title)) {
+          var au = el('audio'); au.src = i.url; au.controls = true; au.preload = 'none'; prev.appendChild(au);
+        } else {
+          var im = el('img'); im.src = i.thumb || i.url; im.loading = 'lazy'; im.alt = i.desc || i.title; prev.appendChild(im);
+        }
+        card.appendChild(prev);
+        var m = el('div', 'meta');
+        if (card.classList.contains('current')) m.appendChild(el('span', 'tag', 'IN THE APP NOW'));
+        var t = el('a'); t.href = i.page; t.target = '_blank'; t.rel = 'noopener'; t.appendChild(el('b', '', i.title)); m.appendChild(t);
+        m.appendChild(el('span', '', [i.licence, i.artist, i.date, i.dur ? Math.round(i.dur) + ' s' : (i.w ? i.w + '×' + i.h : '')].filter(Boolean).join(' · ')));
+        if (i.desc) m.appendChild(el('span', '', i.desc));
+        card.appendChild(m);
+        var vote = el('div', 'vote'); vote.setAttribute('role', 'group'); vote.setAttribute('aria-label', 'Decision for ' + i.title);
+        [['use', 'Use'], ['maybe', 'Maybe'], ['no', 'No']].forEach(function (o) {
+          var b = el('button', '', o[1]); b.type = 'button'; b.dataset.v = o[0]; b.setAttribute('aria-pressed', s.v === o[0] ? 'true' : 'false');
+          b.addEventListener('click', function () {
+            var on = b.getAttribute('aria-pressed') !== 'true';
+            Array.prototype.forEach.call(vote.children, function (x) { x.setAttribute('aria-pressed', 'false'); });
+            if (on) b.setAttribute('aria-pressed', 'true');
+            state[k] = Object.assign(state[k] || {}, { v: on ? o[0] : '', page: i.page, step: g.step });
+            if (on) card.dataset.v = o[0]; else delete card.dataset.v;
+            save();
+          });
+          vote.appendChild(b);
+        });
+        card.appendChild(vote);
+        var note = el('input'); note.placeholder = 'Note (e.g. use for the masthead)'; note.value = s.note || '';
+        note.setAttribute('aria-label', 'Note for ' + i.title);
+        note.addEventListener('input', function () { state[k] = Object.assign(state[k] || {}, { note: note.value, page: i.page, step: g.step }); save(); });
+        card.appendChild(note);
+        grid.appendChild(card);
+      });
+      sec.appendChild(grid);
+      main.appendChild(sec);
+    });
+  });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    var by = {};
+    Object.keys(state).forEach(function (k) {
+      var s = state[k]; if (!s.v && !s.note) return;
+      (by[s.step] = by[s.step] || []).push('- **' + (s.v || 'note').toUpperCase() + '** ' + k.split('|')[1] + (s.note ? ' — ' + s.note : '') + ' (' + s.page + ')');
+    });
+    var md = Object.keys(by).map(function (st) { return '### ' + st + '\n' + by[st].join('\n'); }).join('\n\n') || '(no picks yet)';
+    var st = document.getElementById('status');
+    (navigator.clipboard ? navigator.clipboard.writeText(md) : Promise.reject()).then(function () { st.textContent = 'Copied. Paste it to Claude.'; },
+      function () { window.prompt('Copy this:', md); });
+  });
+})();
+</script>
+</body>
+</html>

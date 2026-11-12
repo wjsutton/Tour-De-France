@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Toughest Tour</title>
+    <meta name="description" content="Which Tour de France was the toughest? 113 editions compared on five factors: pace, distance, abandons, elevation and competition." />
+    <link rel="stylesheet" href="src/fonts.css" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#explore">Skip to the explorer</a>
+
+    <header class="masthead">
+      <!-- silent newsreel loop, decoration only: the motion toggle pauses it -->
+      <video class="masthead-video" id="hero-video" src="media/era.webm" poster="media/era.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+      <h1><span class="ln">The</span> <span class="ln">Toughest</span> <span class="ln">Tour</span></h1>
+      <p class="standfirst">Which Tour de France was the toughest?</p>
+      <p class="masthead-credit">Film: <i>De Tour de France</i> 1954, Polygoon-Profilti / Beeld en Geluid, CC BY-SA 3.0 NL (extract, sound removed)</p>
+    </header>
+
+    <main class="story" id="story">
+      <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+      <!-- source of whichever photo is on screen; screen readers get it from each figure's caption -->
+      <p class="bgcap" id="bgcap" aria-hidden="true"></p>
+      <div class="steps">
+        <!-- ponytail: 1919 copy is fixed (its numbers never change); the latest year comes from the data -->
+        <section class="step" data-step="d-start" data-ch="1" data-bg="1919">
+          <p class="km">1 · Départ</p>
+          <p class="yr">1919</p>
+          <h2>69 of you will enter the race.</h2>
+          <figure class="media" data-slot="1919"></figure>
+        </section>
+        <section class="step" data-step="d-win" data-ch="1" data-bg="1919b">
+          <p class="yr">1919</p>
+          <h2>Only 1 will win.</h2>
+          <p><span class="win">Belgian Firmin Lambot</span>.</p>
+          <figure class="media" data-slot="1919b"></figure>
+        </section>
+        <section class="step" data-step="d-out" data-ch="1" data-bg="1919">
+          <p class="yr">1919</p>
+          <h2>But only 10 of you will finish.</h2>
+          <p>Fifteen stages later, <b>59 riders have quit</b>. Pink marks a rider who abandoned, for the whole story.</p>
+        </section>
+        <section class="step" data-step="d-now" data-ch="1" data-bg="bernal2019">
+          <p class="yr" data-fact="nowYear">2019</p>
+          <h2>A century later, your odds are far better.</h2>
+          <p><span data-fact="nowStarters">176</span> riders start. <b><span data-fact="nowFinishers">155</span> reach Paris</b>, and only <span data-fact="nowQuit">21</span> quit.</p>
+          <figure class="media" data-slot="field2019"></figure>
+          <figure class="media" data-slot="bernal2019"></figure>
+        </section>
+        <section class="step" data-step="d-both" data-ch="1" data-bg="1919">
+          <p class="yr">1919 · <span data-fact="nowYear">2019</span></p>
+          <h2>Same race, different odds.</h2>
+          <p>In 1919, <b>14%</b> of the field reached Paris. In <span data-fact="nowYear">2019</span>, <b><span data-fact="nowShare">88</span>%</b> did.</p>
+        </section>
+
+        <section class="step" data-step="ab" data-ch="2" data-bg="1926c">
+          <p class="km">2 · Five ways to suffer</p>
+          <p class="yr">Abandons</p>
+          <h2>So was it tougher back then?</h2>
+          <p>On abandons, yes: about <b><span data-fact="abEarly">69</span>%</b> of riders quit each Tour before the First World War, about <b><span data-fact="abRecent">21</span>%</b> since 2000.</p>
+        </section>
+        <section class="step" data-step="ab-more" data-ch="2" data-bg="1962">
+          <p class="yr">Five ways to suffer</p>
+          <h2>But quitting is only one way to suffer.</h2>
+          <p>A Tour is also hard when it is long, high, close or fast. Each gets a wedge of the wheel.</p>
+        </section>
+        <section class="step" data-step="distance" data-ch="2" data-bg="1926c">
+          <p class="yr">Distance</p>
+          <h2>1926, the longest.</h2>
+          <p>Lucien Buysse's Tour covered 5,745 km, almost double a modern route.</p>
+          <figure class="media" data-slot="1926"></figure>
+          <figure class="media" data-slot="1926b"></figure>
+          <figure class="media" data-slot="1926c"></figure>
+        </section>
+        <section class="step" data-step="elevation" data-ch="2" data-bg="1962">
+          <p class="yr">Elevation</p>
+          <h2>Up to 2,802 m.</h2>
+          <p>The Cime de la Bonette: first in 1962, then again in <span data-fact="bonetteRepeats">1964, 1993, 2008 and 2024</span>.</p>
+          <figure class="media" data-slot="1962"></figure>
+        </section>
+        <section class="step" data-step="competition" data-ch="2" data-bg="1968">
+          <p class="yr">Competition</p>
+          <h2>Won on the final day.</h2>
+          <p>Jean Robic in 1947 and Jan Janssen in 1968 only took the lead on the last stage.</p>
+          <figure class="media" data-slot="1968"></figure>
+        </section>
+        <section class="step" data-step="merckx" data-ch="2" data-bg="merckxc">
+          <p class="yr">Competition</p>
+          <h2>The Merckx years.</h2>
+          <p>Merckx led most stages in 1969–72 and 1974, so his bars almost vanish. They return in 1975, when Thévenet beat him.</p>
+          <figure class="media" data-slot="merckx"></figure>
+          <figure class="media" data-slot="merckxb"></figure>
+          <figure class="media" data-slot="merckxc"></figure>
+        </section>
+        <section class="step" data-step="pace" data-ch="2" data-bg="pacec">
+          <p class="yr">Pace</p>
+          <h2>Faster, not easier.</h2>
+          <p>Winners averaged about 25 kph in the 1900s. Armstrong's 2005 record was voided; <span data-fact="fastest">2026 averaged 43.3 kph, the fastest Tour ever</span>.</p>
+          <figure class="media" data-slot="pace"></figure>
+          <figure class="media" data-slot="paceb"></figure>
+          <figure class="media" data-slot="pacec"></figure>
+        </section>
+
+        <section class="step" data-step="wheel" data-ch="3" data-bg="1919">
+          <p class="km">3 · Read a wheel</p>
+          <p class="yr">The wheel</p>
+          <h2>Put the five together.</h2>
+          <p>Each Tour becomes a wheel; a wedge that reaches the tyre is the record. In 1919 the pink wedge is full: 86% quit.</p>
+        </section>
+        <section class="step" data-step="compare" data-ch="3" data-bg="introb">
+          <p class="yr">1919 · <span data-fact="latestYear">2026</span></p>
+          <h2>Now compare <span data-fact="latestYear">2026</span>.</h2>
+          <p>Far fewer riders quit and the route is shorter. But look at the green wedge: speed.</p>
+          <figure class="media" data-slot="intro"></figure>
+          <figure class="media" data-slot="introb"></figure>
+        </section>
+
+        <section class="step" data-step="rank" data-ch="4" data-bg="1919b">
+          <p class="km">4 · Classement</p>
+          <p class="yr">Classement</p>
+          <h2><span data-fact="top1">1919</span> was the toughest Tour.</h2>
+          <p>Average the five wedges: <span data-fact="top1">1919</span> scores <b data-fact="top1Score">87</b>, first of <span data-fact="tours">113</span>. <span data-fact="runnersUp">1922 (81) and 1949 (80)</span> come next.</p>
+        </section>
+        <section class="step" data-step="rank-last" data-ch="4" data-bg="1919b">
+          <p class="yr">Classement</p>
+          <h2>And the easiest? The very first.</h2>
+          <p><span data-fact="last">1903</span>: six stages, low roads, and Maurice Garin led from start to finish. It scores <b data-fact="lastScore">44</b>.</p>
+        </section>
+
+        <section class="step" data-step="eras" data-ch="5" data-bg="era">
+          <p class="km">5 · Shape shift</p>
+          <p class="yr">Shape shift</p>
+          <h2>The Tour never got easier.</h2>
+          <p>Average each era and the score barely moves: <b data-fact="eraScores">67, 68, 64</b>. The pain moved round the wheel, from abandons (<span data-fact="abThen">72</span>) before the war to pace (<span data-fact="paceNow">93</span>) since 1990.</p>
+          <figure class="media" data-slot="era"></figure>
+        </section>
+
+        <section class="step" data-step="you" data-ch="6" data-bg="introb">
+          <p class="km">6 · Your Tour</p>
+          <p class="yr">Your Tour</p>
+          <h2>Find your Tour</h2>
+          <div class="find">
+            <label for="born">The year you were born</label>
+            <input id="born" type="number" inputmode="numeric" min="1903" max="2026" value="1990" />
+          </div>
+          <p id="you-out" aria-live="polite"></p>
+        </section>
+        <section class="step" data-step="explore" data-ch="6" id="explore" tabindex="-1">
+          <h2>Explore every Tour</h2>
+          <p>All <span data-fact="tours">113</span> editions. The gaps are the two World Wars. Tap or hover a wheel, or tab into the grid and use the arrow keys, for its numbers.</p>
+          <div class="seg" role="group" aria-label="Order the wheels by">
+            <button type="button" data-sort="year" aria-pressed="true">Year</button><button type="button" data-sort="rank" aria-pressed="false">Toughness</button>
+          </div>
+        </section>
+      </div>
+      <div class="stage" id="stage">
+        <svg id="chart" role="img" aria-labelledby="chart-desc" aria-describedby="chart-keys">
+          <desc id="chart-desc">Coxcomb wheels of Tour de France editions.</desc>
+        </svg>
+        <div class="tip" id="tip" role="status" aria-live="polite" hidden></div>
+        <p class="sr-only" id="chart-keys">In the explorer, use the arrow keys to move between Tours: left and right for a year, up and down for a decade.</p>
+      </div>
+    </main>
+
+    <!-- pauses the looping film and all animation (WCAG 2.2.2) -->
+    <button type="button" class="motion" id="motion" aria-pressed="true">Motion</button>
+
+    <section class="appendix" aria-label="Data and credits">
+      <details>
+        <summary>Data table</summary>
+        <div class="table-wrap"><table id="table"><caption>Raw values for each Tour (the wheels use each value scaled 0–100 against its record).</caption></table></div>
+      </details>
+      <h2>Methods</h2>
+      <p>Each factor is scaled 0–100 against its record, so the toughest Tour on that measure scores 100. Competition is the share of stages the eventual winner did not lead. A Tour's toughness score is the plain average of its five scaled factors, weighted equally. The era wheels average every Tour in 1903–1939, 1947–1989 and 1990 onwards.</p>
+      <p><button type="button" class="btn" id="csv">Download the data (CSV)</button></p>
+      <h2>Sources</h2>
+      <p>Data: letour.fr, Kaggle, Wikipedia, compiled by Will Sutton. Not affiliated with the Tour de France or A.S.O.</p>
+      <ul id="credits"></ul>
+    </section>
+
+    <!-- Tableau Extensions API library. Injected into the package by the builder at this exact path;
+         it is not part of the workspace source. Must load before app.js. -->
+    <script src="src/tableau.extensions.1.latest.min.js"></script>
+    <script src="src/data.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>

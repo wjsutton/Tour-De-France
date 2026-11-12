@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "data-app",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["data-app/build.py", "dev"],
+      "port": 8000
+    }
+  ]
+}
